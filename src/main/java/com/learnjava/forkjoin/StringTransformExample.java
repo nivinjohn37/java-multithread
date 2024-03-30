@@ -10,7 +10,6 @@ import static com.learnjava.util.CommonUtil.stopWatch;
 import static com.learnjava.util.LoggerUtil.log;
 
 public class StringTransformExample {
-
     public static void main(String[] args) {
 
         stopWatch.start();

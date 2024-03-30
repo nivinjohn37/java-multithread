@@ -17,6 +17,11 @@ public class ProductService {
 
     public Product retrieveProductDetails(String productId) {
         stopWatch.start();
+        Runnable productInfoRunnable = new ProductInfoRunnable(productId);
+        Thread productInfoThread = new Thread(productInfoRunnable);
+
+        Runnable reviewRunnable = new ReviewRunnable(productId);
+        Thread reviewThread = new Thread(reviewRunnable);
 
         ProductInfo productInfo = productInfoService.retrieveProductInfo(productId); // blocking call
         Review review = reviewService.retrieveReviews(productId); // blocking call
@@ -35,5 +40,39 @@ public class ProductService {
         Product product = productService.retrieveProductDetails(productId);
         log("Product is " + product);
 
+    }
+
+    private class ProductInfoRunnable implements Runnable {
+        private ProductInfo productInfo;
+        private String productId;
+        public ProductInfoRunnable(String productId) {
+            this.productId = productId;
+        }
+
+        public ProductInfo getProductInfo() {
+            return productInfo;
+        }
+
+        @Override
+        public void run() {
+            productInfo = productInfoService.retrieveProductInfo(productId);
+        }
+    }
+
+    private class ReviewRunnable implements Runnable {
+        private Review review;
+        private String productId;
+        public ReviewRunnable(String productId) {
+            this.productId = productId;
+        }
+
+        public Review getReview() {
+            return review;
+        }
+
+        @Override
+        public void run() {
+            review = reviewService.retrieveReviews(productId);
+        }
     }
 }
