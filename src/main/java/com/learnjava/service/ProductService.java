@@ -15,13 +15,19 @@ public class ProductService {
         this.reviewService = reviewService;
     }
 
-    public Product retrieveProductDetails(String productId) {
+    public Product retrieveProductDetails(String productId) throws InterruptedException {
         stopWatch.start();
         Runnable productInfoRunnable = new ProductInfoRunnable(productId);
         Thread productInfoThread = new Thread(productInfoRunnable);
 
         Runnable reviewRunnable = new ReviewRunnable(productId);
         Thread reviewThread = new Thread(reviewRunnable);
+
+        productInfoThread.start();
+        reviewThread.start();
+
+        productInfoThread.join();
+        reviewThread.join();
 
         ProductInfo productInfo = productInfoService.retrieveProductInfo(productId); // blocking call
         Review review = reviewService.retrieveReviews(productId); // blocking call
@@ -31,7 +37,7 @@ public class ProductService {
         return new Product(productId, productInfo, review);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         ProductInfoService productInfoService = new ProductInfoService();
         ReviewService reviewService = new ReviewService();
