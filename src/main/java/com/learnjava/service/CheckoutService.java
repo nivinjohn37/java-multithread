@@ -2,8 +2,13 @@ package com.learnjava.service;
 
 import com.learnjava.domain.checkout.Cart;
 import com.learnjava.domain.checkout.CartItem;
+import com.learnjava.domain.checkout.CheckoutResponse;
+import com.learnjava.domain.checkout.CheckoutStatus;
 
 import java.util.List;
+
+import static com.learnjava.util.CommonUtil.startTimer;
+import static com.learnjava.util.CommonUtil.timeTaken;
 
 public class CheckoutService {
     private PriceValidatorService priceValidatorService;
@@ -12,15 +17,20 @@ public class CheckoutService {
         this.priceValidatorService = priceValidatorService;
     }
 
-    public void checkout(Cart cart){
-
+    public CheckoutResponse checkout(Cart cart) {
+        startTimer();
         List<CartItem> priceValidationList = cart.getCartItemList()
-                .stream()
+                .parallelStream()
                 .map(cartItem -> {
                     cartItem.setExpired(priceValidatorService.isCartItemInvalid(cartItem));
                     return cartItem;
                 })
                 .filter(CartItem::isExpired).toList();
+        timeTaken();
+        if (priceValidationList.size() > 0) {
+            return new CheckoutResponse(CheckoutStatus.FAILURE, priceValidationList);
+        }
 
+        return new CheckoutResponse(CheckoutStatus.SUCCESS);
     }
 }
