@@ -16,8 +16,8 @@ jobs:
         run: git fetch origin
       - name: Merge to main
         run: |
-          git config user.name "Auto-merge Bot"
-          git config user.email "bot@example.com"
+          git config user.name "nivinjohn37"
+          git config user.email "getnivin@gmail.com"
           git merge origin main
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
