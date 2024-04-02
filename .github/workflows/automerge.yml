@@ -3,7 +3,7 @@ name: Auto-merge to main
 on:
   push:
     branches:
-      - [ feature/*, bugfix/* ]
+      - feature/automerge
 
 jobs:
   merge:
