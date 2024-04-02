@@ -20,4 +20,4 @@ jobs:
           git config user.email "getnivin@gmail.com"
           git merge origin main
         env:
-          GITHUB_TOKEN: ${{ secrets.MULTITHREAD }}
+          GITHUB_TOKEN: ${{ secrets.multithread }}
