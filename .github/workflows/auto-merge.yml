@@ -1,0 +1,19 @@
+name: Auto Merge to Main
+
+on:
+  push:
+    branches:
+      - feature/auto-merge
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Merge changes
+        run: git merge --ff-only ${{ github.event.before }} ${{ github.sha }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
