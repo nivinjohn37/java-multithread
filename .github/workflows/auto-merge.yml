@@ -8,12 +8,16 @@ on:
 jobs:
   merge:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Merge changes
-        run: git merge --ff-only ${{ github.event.before }} ${{ github.sha }}
+      - uses: actions/checkout@v2
+      - name: Install git
+        run: sudo apt-get update && sudo apt-get install -y git
+      - name: Fetch updates
+        run: git fetch origin
+      - name: Merge to main
+        run: |
+          git config user.name "Auto-merge Bot"
+          git config user.email "bot@example.com"
+          git merge origin main
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
