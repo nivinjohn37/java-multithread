@@ -4,7 +4,6 @@ import com.learnjava.domain.checkout.Cart;
 import com.learnjava.domain.checkout.CartItem;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CheckoutService {
     private PriceValidatorService priceValidatorService;
