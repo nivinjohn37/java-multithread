@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 public class CheckoutService {
     private PriceValidatorService priceValidatorService;
-
     public CheckoutService(PriceValidatorService priceValidatorService) {
         this.priceValidatorService = priceValidatorService;
     }
