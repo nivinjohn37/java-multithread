@@ -1,4 +1,5 @@
 # Parallel Streams - Under the Hood
+---
 
 ![Stream API and Parallel Streams](./images/Parallel2.png)
 
