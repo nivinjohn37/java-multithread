@@ -1,0 +1,83 @@
+# Parallel Streams - Under the Hood
+
+---
+
+![Stream API and Parallel Streams](./images/Parallel2.png)
+
+## Introduction
+
+Parallel Streams in the Java Stream API allow for concurrent processing of stream elements, leveraging multi-core processors to improve performance. Understanding how parallel streams work under the hood can help optimize their usage and performance.
+
+## Split, Execute, Combine
+
+- **Split**: When you use a parallel stream, it splits the underlying data source (like a collection) into smaller segments to be processed concurrently. This splitting is done using a spliterator, which is an iterator that can be split into multiple parts.
+- **Execute**: Each segment is processed independently in parallel by threads from the common ForkJoinPool. The ForkJoinPool is a special pool of threads designed for handling divide-and-conquer algorithms efficiently.
+- **Combine**: Once the processing of segments is complete, the results are combined to produce the final result. This combining process is done using a tree-like structure, where partial results are merged at each level until a single result is obtained.
+
+**Example**:
+
+```java
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+int sum = numbers.parallelStream().mapToInt(Integer::intValue).sum();
+
+```
+
+## Split Mechanisms
+
+- **Iterator Splitting**: For collections that provide indexed access (like ArrayList), the spliterator splits the iterator into smaller iterators for parallel processing. This allows parallel streams to process different parts of the collection simultaneously.
+- **ArrayListSpliterator**: ArrayListSpliterator is a specific implementation of the spliterator interface for ArrayLists. It efficiently splits an ArrayList into smaller chunks for parallel processing, with the smallest chunk being a single element.
+
+**Example**:
+
+```java
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+Spliterator<Integer> spliterator = numbers.spliterator();
+
+```
+
+## Execution
+
+- **Common ForkJoinPool**: Parallel streams use the common ForkJoinPool for executing parallel tasks. This pool is shared among all parallel streams in the application.
+- **Sequential Execution**: Even though tasks are executed in parallel, the order of operations is maintained. This means that if your stream has an order (like in a List), the result will also maintain that order, ensuring correct results.
+
+**Example**:
+
+```java
+ForkJoinPool commonPool = ForkJoinPool.commonPool();
+int parallelism = commonPool.getParallelism();
+
+```
+
+## Combine and Terminal Operations
+
+- **Combining Results**: Terminal operations, such as collect or reduce, combine the results of parallel segments to produce the final result. This combining process is essential for obtaining the correct result from parallel processing.
+- **Data Accumulation**: The collect function uses a mutable data container to accumulate results. Partial results from different segments are merged into this container at each level of the computation, ensuring that all elements are accounted for.
+
+**Example**:
+
+```java
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+int sum = numbers.parallelStream().reduce(0, Integer::sum);
+
+```
+
+## Performance Considerations
+
+- **ArrayList vs. LinkedList**: The performance difference between parallel and sequential streams is less significant for ArrayLists. This is because ArrayLists can be efficiently split into chunks for parallel processing. On the other hand, LinkedLists are more challenging to split efficiently, which can lead to lower performance gains in parallel streams.
+- **Final Computation Result Order**: The type of collection and its spliterator implementation can affect the final result order in parallel streams. For example, ArrayLists maintain their order, while Sets do not guarantee any specific order, which can impact the final result order in parallel streams.
+
+**Example**:
+
+```java
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+int sum = numbers.parallelStream().reduce(0, Integer::sum);
+
+```
+
+## Conclusion
+
+Parallel Streams in the Stream API provide a powerful mechanism for concurrent processing of stream elements. Understanding the underlying mechanisms and performance considerations can help optimize the usage of parallel streams for improved performance.
+
+---
+
+Feel free to ask if you have any more questions or need further clarification!
