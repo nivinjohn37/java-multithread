@@ -54,11 +54,3 @@
 - Understanding the basics of multithreading and its related concepts is essential for writing robust and scalable Java applications.
 
 ---
-
-## Sections:
-
-[Thread Pool/ExecuterService & Future](Java%20Multithreading%206a80cb8e9cda45bf84bf493e89c8e581/Thread%20Pool%20ExecuterService%20&%20Future%20bc706e4b9a9f44d5899989bfb4c754c8.md)
-
-[Fork-Join Framework](Java%20Multithreading%206a80cb8e9cda45bf84bf493e89c8e581/Fork-Join%20Framework%20a716d070c1ef4348a9d3a0fd72ca6c07.md)
-
-[Parallel Streams](Java%20Multithreading%206a80cb8e9cda45bf84bf493e89c8e581/Parallel%20Streams%20141246cbf4e74755a13a09969999e479.md)
