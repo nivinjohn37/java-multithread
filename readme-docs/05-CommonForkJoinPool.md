@@ -57,6 +57,8 @@ The Common Fork Join Pool is a shared pool of worker threads used by the Java Fo
 
 The Common Fork Join Pool and parallelism in the Java Fork/Join Framework and Streams API provide powerful tools for concurrent and parallel programming. Understanding their behavior and usage can help you write more efficient and scalable Java applications.
 
+---
+
 ### References:
 https://dzone.com/articles/be-aware-of-forkjoinpoolcommonpool
 ---
