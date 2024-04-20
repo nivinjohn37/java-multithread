@@ -134,6 +134,11 @@ public class ProductServiceUsingCompletablaFuture {
                 .stream()
                 .map(productOption -> {
                     return CompletableFuture.supplyAsync(() -> inventoryervice.addInventory(productOption))
+                            .exceptionally((e) -> {
+                                log("Handled the Exception in updateInventory : " + e.getMessage());
+                                return Inventory.builder()
+                                        .count(1).build();
+                            })
                             .thenApply(inventory -> {
                                 productOption.setInventory(inventory);
                                 return productOption;
